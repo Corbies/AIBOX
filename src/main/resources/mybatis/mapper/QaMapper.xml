@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wx.aibox.dao.Qadao">
+    <resultMap id="BaseResultMap" type="com.wx.aibox.model.QaModel" >
+        <id column="id"           property="id"      />
+        <result column="problem"     property="problem"    />
+        <result column="answer"     property="answer"    />
+        <result column="email"     property="email"    />
+    </resultMap>
+
+    <select id="listAllTests"  resultMap="BaseResultMap">SELECT * FROM QA </select>
+
+    <select id="getCount"  resultType="int">SELECT COUNT(*) FROM QA </select>
+
+    <select id="getpage" parameterType="com.wx.aibox.tools.Page" resultMap="BaseResultMap">
+        SELECT * FROM QA order by id limit #{dbIndex},#{dbNumber}
+    </select>
+
+    <select id="findById" parameterType="int" resultMap="BaseResultMap">SELECT * FROM QA WHERE id=#{id}</select>
+    <select id="findByName" parameterType="String" resultMap="BaseResultMap">SELECT * FROM QA WHERE username=#{username}</select>
+    <insert id="insert" parameterType="com.wx.aibox.model.QaModel">
+        insert into QA(problem,email,username)values(#{problem},#{email},#{username})
+    </insert>
+
+    <!--<select id="getCount"  resultType="int">SELECT COUNT(*) FROM QA </select>-->
+</mapper>

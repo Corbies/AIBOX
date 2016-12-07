@@ -17,7 +17,7 @@ LOG_PATH_IS_UNDEFINED
 *.iws
 *.iml
 *.ipr
-
+README.md
 ### NetBeans ###
 nbproject/private/
 build/

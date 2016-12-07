@@ -27,7 +27,12 @@ public class TokenAuth {
         @Scheduled(fixedRate = 7000000)
         public void reportCurrentTime() {
             logger.info(">Update token" + dateFormat.format(new Date()));
-            tokenService.getToken();
+            try {
+                tokenService.getToken();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
             logger.info("<Update token");
         }
 

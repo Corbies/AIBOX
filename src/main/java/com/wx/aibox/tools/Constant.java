@@ -13,4 +13,5 @@ public interface Constant {
 
     String tokenauth="https://api.weixin.qq.com/cgi-bin/token";
 
+    String url=tokenauth + "?grant_type=" + grant_type + "&appid=" + appid + "&secret=" + secret;
 }

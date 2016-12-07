@@ -3,6 +3,7 @@ package com.wx.aibox.tools;
 
 import com.alibaba.fastjson.JSONObject;
 import com.wx.aibox.service.token.Code;
+import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
@@ -17,6 +18,10 @@ import org.springframework.util.Base64Utils;
 
 import java.io.IOException;
 import java.net.URLDecoder;
+
+import static org.apache.commons.httpclient.methods.multipart.FilePart.DEFAULT_CHARSET;
+import static org.springframework.http.HttpHeaders.ACCEPT;
+import static org.springframework.http.HttpHeaders.HOST;
 
 public class HttpClient {
     private static final Logger logger = LoggerFactory.getLogger(HttpClient.class);
@@ -122,27 +127,27 @@ public class HttpClient {
         try {
             CloseableHttpClient client= HttpClients.createDefault();
             HttpGet request = new HttpGet(url);
-            request.setHeader("","");
+            HttpClient httpClient = new HttpClient();
+            GetMethod getMethod = new GetMethod(url);
+            request.addHeader("Accept-Charset", "UTF-8");
+            request.addHeader("Host", HOST);
+            request.addHeader("Accept", ACCEPT);
             HttpResponse response = client.execute(request);
-
+            logger.info(" response.getStatusLine().getStatusCode(){}",response.getStatusLine().getStatusCode());
             /**请求发送成功，并得到响应**/
             if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-                /**读取服务器返回过来的json字符串数据**/
                 String strResult = EntityUtils.toString(response.getEntity());
-                /**把json字符串转换成json对象**/
-                logger.info(" json 返回值{}",strResult);
                 jsonResult = JSONObject.parseObject(strResult);
                 url = URLDecoder.decode(url, "UTF-8");
-
             } else {
                 logger.error("get请求提交失败:" + url+"code"+response.getStatusLine().getStatusCode());
                 jsonResult=  JSONObject.parseObject(String.valueOf(response.getStatusLine().getStatusCode()));
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
+            e.printStackTrace();
             logger.error("get请求提交失败:" + url, e);
         }
-        logger.error("result" + jsonResult);
-        logger.error("result" + jsonResult.toString());
+        logger.info("result" + jsonResult.toString());
         return jsonResult;
 
     }
